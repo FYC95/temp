@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace值  接口名称 -->
+<mapper namespace="fyc.epss.dao.adminDao">
+
+    <insert id="insertObj" parameterType="admin" useGeneratedKeys="true" keyProperty="id">
+        insert into admin (password,adminName) values (#{password},#{adminName})
+    </insert>
+    <select id="selectByCondition" parameterType="admin" resultType="admin">
+        select * from admin where id > #{id} and adminName like concat('%',#{adminName},'%')
+    </select>
+
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="fyc.epss">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+<!--  每个bean的声明都将被放在IOC容器中 -->
+<!--  id是对象名，class是类  -->
+   <!-- <bean id="adminMapper" class="fyc.epss.dao.AdminMapper"></bean>
+    <bean id="adminService" class="fyc.epss.service.AdminService">
+        <property name="adminMapper" ref="adminMapper"></property>
+    </bean>-->
+
+    <context:property-placeholder location="classpath:db1.properties" />
+    <!-- 配置dataSource数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!-- 创建SqlSessionFactory，并配置实体对象别名 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+<!--        <property name="typeAliasesPackage" value="fyc.epss.domain" />-->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+<!--        配置分页插件-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor" id="pageInterceptor">
+                    <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            offsetAsPageNum=true
+                            pageSizeZero=true
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+    </bean>
+    <!-- 配置Mapper，自动扫描Mapper接口，并为其注入SqlSessionFactory -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="fyc.epss.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+<!--  配置Spring声明式事务 spring-jdbc包transaction -->
+<!--  配置事务管理器  -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+<!--  配置事务增强,由spring子模块提供,可以使用名字空间方式namespace引用  -->
+    <tx:advice id="transactionInterceptor" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" isolation="DEFAULT" />
+            <tx:method name="select*" read-only="true" />
+            <tx:method name="count*" read-only="true" />
+            <tx:method name="query*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+
+<!--  配置aop切入,事务切入方法可以是注解、配置文件  -->
+    <aop:config>
+<!--    使用表达式语法描述    -->
+        <aop:advisor advice-ref="transactionInterceptor" pointcut="execution(* fyc.epss.service.impl.*Impl.*(..))"></aop:advisor>
+    </aop:config>
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="day20221123" />
+        <module name="myBatisGenerator" />
+        <module name="springFrame1" />
+        <module name="SpringFrameTestDay1129" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springFrame1 (1)" target="11" />
+      <module name="springFrame2" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

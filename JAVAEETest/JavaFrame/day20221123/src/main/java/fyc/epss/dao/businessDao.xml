@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace值  接口名称 -->
+<mapper namespace="fyc.epss.dao.businessDao">
+    <!--
+        id   对应   接口中的  方法名
+        parameterType   对应   方法的传入参数类型
+        #{变量名}      实现参数的引用   , 基本类型变量名任意  ， 复合类型不可以
+        resultType      对应   方法的返回类类型  ,  方法返回基本类型可以不设定 resultType
+
+        public Business selectByPrimaryKey(int id);
+    -->
+    <select id="selectByPrimaryKey" parameterType="int" resultType="business">
+        select * from business where id=#{value}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        delete from business where id=#{val}
+    </delete>
+    <insert id="insertObj" parameterType="business">
+        insert into business (password,businessName) values (#{password},#{businessName})
+    </insert>
+    <update id="updateObj" parameterType="business">
+        update business set businessName=#{businessName},password=#{password} where id=#{id}
+    </update>
+    <select id="selectAll" resultType="business">
+        select * from business
+    </select>
+    <select id="countNum" resultType="int">
+        select count(id) as num from business
+    </select>
+    <!--<select id="selectByCondition" parameterType="business" resultType="business">
+        select * from admin where id > #{id} and businessName like concat('%',#{businessName},'%')
+    </select>-->
+</mapper>

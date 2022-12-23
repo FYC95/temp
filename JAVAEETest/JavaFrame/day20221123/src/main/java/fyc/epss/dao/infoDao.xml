@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace值  接口名称 -->
+<mapper namespace="fyc.epss.dao.infoDao">
+
+    <insert id="insertObj" parameterType="info">
+        insert into info (aid,phone) values (#{aid},#{phone})
+    </insert>
+
+</mapper>

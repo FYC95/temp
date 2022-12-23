@@ -1,0 +1,21 @@
+server:
+  port: 8088
+
+logging:
+  level:
+    org.springframework: debug
+
+name: fyc1913
+hobby:
+  - 足球
+  - 篮球
+  - 乒乓球
+Person:
+  name: guest
+  age: 18
+  salary: 123.5
+dbconnection:
+  driver: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3310/ele_se?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+  username: root
+  password: 000000

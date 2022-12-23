@@ -1,0 +1,16 @@
+#server:
+#  port: 8082
+#logging:
+#  level:
+#    org.springframework: error
+#    fyc.epss.dao: info
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3310/ele_se?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true
+#    username: root
+#    password: 000000
+    mybatis-plus:
+      configuration:
+        map-underscore-to-camel-case: false
+

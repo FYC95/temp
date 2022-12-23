@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>欢迎来到表单验证界面!</h2>
+<form method="post" action="http://localhost:8080/day20221026_war_exploded/insert-food">
+    <input type="text" name="userName" value="ad" /> <br />
+    <input type="password" name="password" value="456789" />
+    <input type="submit" value="插入食品信息" />
+    <a href="http://localhost:8080/day20221026_war_exploded/hello">点击查询食品列表</a><br />
+    食品名<input type="text" name="name" value="食品" /> <br />
+    食品描述<input type="text" name="explain" value="描述" /> <br />
+    食品价格<input type="text" name="price" value="15" /> <br />
+    商家编号<input type="text" name="bid" value="5" /> <br />
+    <a class="a" href="http://localhost:8080/day20221026_war_exploded/crossRegion?name=张三">点击跨域</a>
+</form>
+<div id="dis"></div>
+
+<script>
+    window.onload = function (){
+        document.querySelector(".a").onclick = function (eve) {
+            eve.stopPropagation();
+            eve.preventDefault();
+            var xhr = new XMLHttpRequest()
+            xhr.open("get","/day20221026_war_exploded/crossRegion?name=张三",true);
+            xhr.onreadystatechange = function (data) {
+                if (xhr.readyState == 4 && xhr.status == 200){
+                    console.log(xhr.responseText);
+                    var s = JSON.parse(xhr.responseText);
+                    document.querySelector("#dis").innerHTML = s;
+                }
+            };
+            xhr.send();
+        }
+
+    };
+</script>
+
+</body>
+</html>

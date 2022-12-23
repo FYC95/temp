@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--
+           此标签能够自动加载注解的处理器映射和注解的处理器适配，
+          而且还默认加载了很多其他方法。 比如：参数绑定到控制器参数、json转换解析器
+    -->
+    <mvc:annotation-driven />
+    <!-- 开启注解扫描，将包下带有@Controller注解的类纳入Spring容器中-->
+    <context:component-scan base-package="fyc.epss" >
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+    </context:component-scan>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
+<!--        前缀-->
+        <property name="prefix" value="/WEB-INF/"></property>
+<!--        后缀-->
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--必须要有此id名 multipartResolver不可修改-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传文件大小限制，单位：字节 -->
+        <property name="maxUploadSize" value="5000000"></property>
+    </bean>
+
+    <!-- 配置拦截器之前配置静态资源过滤原则 -->
+    <mvc:resources mapping="/css/**" location="/css/" />
+    <!-- 可以配置多个拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**" />
+<!--            可以添加排除的选项（静态资源，登录页和登录handler）-->
+            <mvc:exclude-mapping path="/adminar/**"/>
+            <bean class="fyc.epss.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>
